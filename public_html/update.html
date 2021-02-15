@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>UPDATE Data in JSON DB </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div>
+            <form>
+                <h3>Update Data </h3>
+                <div class="form-group"> 
+                      <span><label for="empId">Enter Employee ID to Update Email :</label> <label id="empIdMsg">
+                        </label></span>
+                    <input type="text" class="form-control" name="empId" id="empId"
+                           placeholder="Enter Employee ID" required>
+                    <div class="form-group">
+                    <label for="empEmail"> Change Email Address:</label>
+                    
+                    <input type="email" class="form-control" id="empEmail"
+                           placeholder="Enter Employee Email" name="empEmail">
+                </div>
+                     <input type="button" class="btn btn-primary" id="empSave" value="Save"
+                       onclick="updateData();">
+                </div>
+            </form>
+        </div>
+        <script>
+            function executeCommand(reqString, dbBaseUrl, apiEndPointUrl) {
+                var url = dbBaseUrl + apiEndPointUrl;
+                var jsonObj;
+                $.post(url, reqString, function (result) {
+                    jsonObj = JSON.parse(result);
+                }).fail(function (result) {
+                    var dataJsonObj = result.responseText;
+                    jsonObj = JSON.parse(dataJsonObj);
+                });
+                return jsonObj;
+            }
+            
+                function updateData() {
+                var token = "90935403|-31948797843369933|90931780";
+                var dbname = "SAMPLE1";
+                var relationName = "EMP-REL";
+                var empId = parseInt(document.getElementsbyId("empId").value);
+                var emmEmail = document.getElementsbyId("empEmail").value;
+                
+                var jsonObj = {
+                   empEmail : empEmail
+                };
+                var reqString = createUPDATERecordRequest("90935403|-31948797843369933|90931780",
+                        jsonStr, "SAMPLE1", "EMP-REL");
+                alert(reqString);
+                jQuery.ajaxSetup({async: false});
+                var resultObj = executeCommand(reqString,
+                        "http://api.login2explore.com:5577", "/api/iml");
+                alert(JSON.stringify(resultObj));
+                jQuery.ajaxSetup({async: true}
+                );
+                }
+        </script>
+    </body>
+</html>
